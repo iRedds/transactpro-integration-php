@@ -7,6 +7,7 @@ use TransactPRO\Gate\Builders\CancelDmsDataBuilder;
 use TransactPRO\Gate\Builders\ChargeDataBuilder;
 use TransactPRO\Gate\Builders\ChargeHoldDataBuilder;
 use TransactPRO\Gate\Builders\ChargeRecurrentDataBuilder;
+use TransactPRO\Gate\Builders\DoRecurrentB2PDataBuilder;
 use TransactPRO\Gate\Builders\DoRecurrentCreditDataBuilder;
 use TransactPRO\Gate\Builders\DoRecurrentP2PDataBuilder;
 use TransactPRO\Gate\Builders\InitDataBuilder;
@@ -16,6 +17,7 @@ use TransactPRO\Gate\Builders\ChargeB2PDataBuilder;
 use TransactPRO\Gate\Builders\InitCreditDataBuilder;
 use TransactPRO\Gate\Builders\DoP2PDataBuilder;
 use TransactPRO\Gate\Builders\DoCreditDataBuilder;
+use TransactPRO\Gate\Builders\InitRecurrentB2PDataBuilder;
 use TransactPRO\Gate\Builders\InitRecurrentCreditDataBuilder;
 use TransactPRO\Gate\Builders\InitRecurrentDataBuilder;
 use TransactPRO\Gate\Builders\InitRecurrentP2PDataBuilder;
@@ -376,6 +378,34 @@ class GateClient
      *
      * @return Response\Response
      */
+    public function initRecurrentB2P(array $data)
+    {
+        $buildData = $this->buildData(new InitRecurrentB2PDataBuilder($data));
+
+        return $this->requestExecutor->executeRequest('init_recurrent_b2p', $buildData);
+    }
+
+    /**
+     * @docReference 6.3 SUBSEQUENT RECURRENT TRANSACTIONS
+     *
+     * @param array $data
+     *
+     * @return Response\Response
+     */
+    public function doRecurrentB2P(array $data)
+    {
+        $buildData = $this->buildData(new DoRecurrentB2PDataBuilder($data));
+
+        return $this->requestExecutor->executeRequest('do_recurrent_b2p', $buildData);
+    }
+
+    /**
+     * @docReference 6.3 SUBSEQUENT RECURRENT TRANSACTIONS
+     *
+     * @param array $data
+     *
+     * @return Response\Response
+     */
     public function initStoreCardSms(array $data)
     {
         $buildData = $this->buildData(new InitDataBuilder($data));
@@ -410,6 +440,21 @@ class GateClient
     {
         $buildData = $this->buildData(new InitP2PDataBuilder($data));
         $response  = $this->requestExecutor->executeRequest('init_store_card_p2p', $buildData);
+
+        return $response;
+    }
+
+    /**
+     * @docReference 6.3 SUBSEQUENT RECURRENT TRANSACTIONS
+     *
+     * @param array $data
+     *
+     * @return Response\Response
+     */
+    public function initStoreCardB2P(array $data)
+    {
+        $buildData = $this->buildData(new InitB2PDataBuilder($data));
+        $response  = $this->requestExecutor->executeRequest('init_store_card_b2p', $buildData);
 
         return $response;
     }
